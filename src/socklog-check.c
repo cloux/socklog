@@ -23,7 +23,7 @@ struct sockaddr_un sa;
 const char *address ="/dev/log";
 unsigned int verbose =0;
 
-int main(int argc, const char **argv) {
+int main(int argc, char **argv) {
   int opt;
 
   progname =*argv;
@@ -45,7 +45,7 @@ int main(int argc, const char **argv) {
     strerr_die4sys(111, FATAL, "unable to create socket: ", address, ": ");
   byte_zero(&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
-  strncpy(sa.sun_path, address, sizeof(sa.sun_path));
+  strncpy(sa.sun_path, address, sizeof(sa.sun_path)-1);
   if (connect(s, (struct sockaddr *)&sa, sizeof(sa)) == -1) {
     close(s);
 #ifdef EDESTADDRREQ

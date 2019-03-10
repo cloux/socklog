@@ -168,7 +168,7 @@ int socket_unix (const char* f) {
     strerr_die2sys(111, FATAL, "socket(): ");
   byte_zero(&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
-  strncpy(sa.sun_path, f, sizeof(sa.sun_path));
+  strncpy(sa.sun_path, f, sizeof(sa.sun_path)-1);
   unlink(f);
   if (! noumask) umask(0);
   if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1)
@@ -220,7 +220,7 @@ int read_socket (int s) {
 
   for(;;) {
     struct sockaddr_in saf;
-    int dummy =sizeof saf;
+    socklen_t dummy =sizeof saf;
     int linec;
     int os;
     
@@ -261,7 +261,7 @@ int read_socket (int s) {
   return(0);
 }
 
-int read_ucspi (int fd, const char **vars) {
+int read_ucspi (int fd, char **vars) {
   char *envs[9];
   int flageol =1;
   int i;
@@ -408,7 +408,7 @@ static void read_stream_sun(int fd) {
 
 #endif
 
-int main(int argc, const char **argv, const char *const *envp) {
+int main(int argc, char **argv, char *const *envp) {
   int opt;
   int s =0;
   

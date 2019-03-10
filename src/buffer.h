@@ -3,19 +3,21 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
+#include <sys/types.h>
+
 typedef struct buffer {
   char *x;
   unsigned int p;
   unsigned int n;
   int fd;
-  int (*op)();
+  ssize_t (*op)();
 } buffer;
 
 #define BUFFER_INIT(op,fd,buf,len) { (buf), 0, (len), (fd), (op) }
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
-extern void buffer_init(buffer *,int (*)(),int,char *,unsigned int);
+extern void buffer_init(buffer *,ssize_t (*)(),int,char *,unsigned int);
 
 extern int buffer_flush(buffer *);
 extern int buffer_put(buffer *,const char *,unsigned int);
@@ -49,8 +51,8 @@ extern void buffer_seek(buffer *,unsigned int);
 
 extern int buffer_copy(buffer *,buffer *);
 
-extern int buffer_unixread(int,char *,unsigned int);
-extern int buffer_unixwrite(int,const char *,unsigned int);
+extern ssize_t buffer_unixread(int,char *,unsigned int);
+extern ssize_t buffer_unixwrite(int,const char *,unsigned int);
 
 extern buffer *buffer_0;
 extern buffer *buffer_0small;
