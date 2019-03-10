@@ -150,7 +150,8 @@ int scan_syslog_names (char *l, int lc, buffer *buf) {
     }
   }
   if (!ok || !fpr) return(0);
-  return(print_syslog_names(fpr, buf) ? ++i : 0);
+  ++i;
+  return(print_syslog_names(fpr, buf) ? i : 0);
 }
 
 void remote_info (struct sockaddr_in *sa) {
